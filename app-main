@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decision Maker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+    p.description {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      color: #555;
+    }
+    input {
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      width: calc(100% - 120px);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      margin-left: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .option {
+      background: #fff;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      margin: 0.3rem 0;
+      border-radius: 8px;
+    }
+    .result {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #27ae60;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .btn-danger {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Decision Maker</h1>
+  <p class="description">Can't decide? Enter your options and let the app choose one for you!</p>
+
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <input id="optionInput" type="text" placeholder="Enter an option...">
+    <button onclick="addOption()">+ Add</button>
+  </div>
+
+  <h3>Your Options:</h3>
+  <ul id="optionsList"></ul>
+
+  <button onclick="pickOption()">🎲 Decide for me!</button>
+  <div id="result" class="result"></div>
+
+  <button class="btn-danger" onclick="clearOptions()">🗑️ Clear all</button>
+
+  <script>
+    let options = JSON.parse(localStorage.getItem("options")) || [];
+
+    const optionInput = document.getElementById("optionInput");
+    const optionsList = document.getElementById("optionsList");
+    const resultDiv = document.getElementById("result");
+
+    function renderOptions() {
+      optionsList.innerHTML = "";
+      options.forEach(opt => {
+        const li = document.createElement("li");
+        li.textContent = opt;
+        li.className = "option";
+        optionsList.appendChild(li);
+      });
+    }
+
+    function addOption() {
+      const value = optionInput.value.trim();
+      if (value) {
+        options.push(value);
+        localStorage.setItem("options", JSON.stringify(options));
+        optionInput.value = "";
+        renderOptions();
+      }
+    }
+
+    function pickOption() {
+      if (options.length === 0) {
+        resultDiv.textContent = "Please add some options first!";
+        return;
+      }
+      const random = options[Math.floor(Math.random() * options.length)];
+      resultDiv.textContent = `🎉 ${random}`;
+    }
+
+    function clearOptions() {
+      options = [];
+      localStorage.removeItem("options");
+      renderOptions();
+      resultDiv.textContent = "";
+    }
+
+    renderOptions();
+  </script>
+</body>
+</html>
