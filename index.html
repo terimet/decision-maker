@@ -27,6 +27,8 @@
       font-size: 1rem;
       color: #555;
     }
+
+    /* === input a tlačítko add === */
     .input-group {
       display: flex;
       align-items: center;
@@ -56,6 +58,8 @@
     button:hover {
       background-color: #006170;
     }
+
+    /* === seznam možností === */
     ul {
       list-style-type: none;
       padding: 0;
@@ -73,6 +77,8 @@
       font-size: 0.95rem;
       margin-top: 0.5rem;
     }
+
+    /* === výsledek a error messages === */
     .result {
       font-weight: bold;
       font-size: 1.7rem;
@@ -92,6 +98,8 @@
       text-align: center;
       margin-top: 1.5rem;
     }
+
+    /* === tlačítko clear all === */
     .btn-danger {
       background-color: #e74c3c;
       color: white;
@@ -121,32 +129,39 @@
   </style>
 </head>
 <body>
+  <!-- název a popisek -->
   <h1>Decision Maker</h1>
   <p class="description">Can't decide? Enter your options and let the app choose one for you!</p>
 
+  <!-- input políčko a tlačítko pro přidání -->
   <div class="input-group">
     <input id="optionInput" type="text" placeholder="Enter an option...">
     <button onclick="addOption()">+ add</button>
   </div>
   <p id="errorMessage" class="error-message"></p>
 
+  <!-- seznam možností -->
   <h3>Your Options:</h3>
   <ul id="optionsList"></ul>
   <p id="noOptionsMessage" class="no-options"></p>
 
+  <!-- tlačítko pro vybrání možností a výsledek -->
   <div class="centered-button">
     <button onclick="pickOption()">Decide for me!</button>
   </div>
   <div id="result" class="result"></div>
   <p id="decisionError" class="error-inline"></p>
 
+  <!-- tlačítko pro odstranění všech možností -->
   <div class="centered-clear-button">
     <button class="btn-danger" onclick="clearOptions()">clear all</button>
   </div>
 
   <script>
+    // načteme možnosti z localStorage, nebo vytvoříme prázdné pole
     let options = JSON.parse(localStorage.getItem("options")) || [];
 
+    // jednotlivé prvky
     const optionInput = document.getElementById("optionInput");
     const optionsList = document.getElementById("optionsList");
     const resultDiv = document.getElementById("result");
@@ -154,6 +169,7 @@
     const decisionError = document.getElementById("decisionError");
     const noOptionsMessage = document.getElementById("noOptionsMessage");
 
+    // vykreslení možností do seznamu
     function renderOptions() {
       optionsList.innerHTML = "";
       if (options.length === 0) {
@@ -169,6 +185,7 @@
       }
     }
 
+    // přidání nové možnosti do seznamu
     function addOption() {
       const value = optionInput.value.trim();
       if (value) {
@@ -182,6 +199,7 @@
       }
     }
 
+    // výběr náhodné možnosti
     function pickOption() {
       if (options.length === 0) {
         resultDiv.textContent = "";
@@ -193,6 +211,7 @@
       decisionError.textContent = "";
     }
 
+    // smazání všech možností
     function clearOptions() {
       options = [];
       localStorage.removeItem("options");
@@ -201,12 +220,14 @@
       decisionError.textContent = "";
     }
 
+    // umožnění přidání pomocí klávesy Enter
     optionInput.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         addOption();
       }
     });
 
+    // inicializace
     renderOptions();
   </script>
 </body>
